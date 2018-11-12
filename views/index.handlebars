@@ -5,4 +5,8 @@
   <button type="submit">submit</button>
 </form>
 
-Result: <a href='/{{{shortUrl}}}'>http://localhost:3000/{{{shortUrl}}}</a>
+<ul>
+  {{#each urls}}
+    <li><a href="//localhost:3000/{{{this.shortUrl}}}">http//localhost:3000/{{{this.shortUrl}}}</a> => {{this.originalUrl}} </li>
+  {{/each}}
+</ul>

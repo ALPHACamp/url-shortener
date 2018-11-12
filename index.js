@@ -18,7 +18,9 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, (err, db) => {
 })
 
 app.get('/', (req, res) => {
-  res.render('index')
+  Url.find((err, docs) => {
+    res.render('index', {urls: docs})
+  })
 })
 
 app.post('/urls', (req, res) => {
@@ -29,11 +31,11 @@ app.post('/urls', (req, res) => {
   Url.findOne({originalUrl: url.originalUrl}, (err, doc) => {
     if (err) return console.error(err)
     if (doc) {
-      res.render('index', {shortUrl: doc.shortUrl})
+      res.redirect('/')
     } else {
       url.save((err, url) => {
         if (err) return console.error(err)
-        res.render('index', {shortUrl: url.shortUrl})
+        res.redirect('/')
       })
     }
   })
@@ -50,7 +52,6 @@ app.get('/:shortened_id', (req, res) => {
     }
   })
 })
-
 
 app.listen(port, () =>
   console.log(`Example app listening on port ${port}!`)
