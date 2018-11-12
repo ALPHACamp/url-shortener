@@ -47,6 +47,14 @@ $ git commit -m 'update "post /urls" route to shorten url and "get /:shortened_i
 $ npm start
 $ git add .
 $ git commit -m 'update "get /" route to show all short urls'
+
+$ npm i chai --save-dev
+
+# coding ...
+
+$ mocha
+$ git add .
+$ git commit -m 'attch test spec'
 ```
 
 
