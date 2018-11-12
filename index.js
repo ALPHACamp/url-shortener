@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const app = express()
 const port = 3000
 
+const Url = require('./models/url')
+
 const mongoURI = 'mongodb://localhost/l3-express-url-shortener'
 mongoose.connect(mongoURI, { useNewUrlParser: true }, (err, db) => {
   if (err) console.log(`Error`, err)
