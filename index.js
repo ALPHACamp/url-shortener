@@ -14,9 +14,8 @@ app.engine('handlebars', handlebars({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 app.use(bodyParser.urlencoded({extended: true}))
 
-
-// Connect mongodb 
-const mongoURI = 'mongodb://localhost/l3-express-url-shortener'
+// Connect mongodb
+const mongoURI = 'mongodb://localhost/url-shortener'
 mongoose.connect(mongoURI, { useNewUrlParser: true }, (err, db) => {
   if (err) console.log('Error: ', err)
   console.log(`Connected to MongoDB`)
@@ -30,15 +29,14 @@ app.get('/', (req, res) => {
   })
 })
 
-
 // Create a short URL
 app.post('/urls', (req, res) => {
-  
   const originalUrl = req.body.url
 
-  try { 
-    new URL(originalUrl)
-  } catch(e) {
+  try {
+    new URL(originalUrl) 
+    // use the URL object to check the originalUrl valid or not
+  } catch (e) {
     console.log('Error: ', e)
     return res.send('This url is invalid.')
   }
@@ -46,10 +44,11 @@ app.post('/urls', (req, res) => {
   const url = new Url({
     originalUrl: originalUrl,
     shortUrl: shortid.generate()
+    // use the shortid 3-party library to generate an unique id as shortUrl
   })
 
   Url.findOne({originalUrl: url.originalUrl}, (err, doc) => {
-    if (err) console.log('Error: ', err)
+    if (err) return res.send(err)
     if (doc) {
       res.redirect('/')
     } else {
@@ -63,11 +62,10 @@ app.post('/urls', (req, res) => {
 
 // Get original URL
 app.get('/:shortened_id', (req, res) => {
-  
   const shortenedId = req.params.shortened_id
-  
+
   Url.findOne({shortUrl: shortenedId}, (err, doc) => {
-    if (err) return res.render('index', {err: err})
+    if (err) return res.send(err)
     if (doc) {
       res.redirect(doc.originalUrl)
     } else {
